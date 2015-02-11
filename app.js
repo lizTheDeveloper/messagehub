@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Connects to postgres once, on server start
-var conString = "postgres://localhost/action";
+var conString = process.env.DATABASE_URL || "postgres://localhost/action";
 var db;
 pg.connect(conString, function(err, client) {
   if (err) {
@@ -60,7 +60,7 @@ app.post('/:type_token/:channel_token', function(req, res){
 });
 
 
-var server = app.listen(3000, function () {
+var server = app.listen(process.env.PORT, function () {
 
   var host = server.address().address;
   var port = server.address().port;
