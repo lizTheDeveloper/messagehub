@@ -28,7 +28,7 @@ app.get('/:type_token/:channel_token', function (req, res) {
   console.log(db);
   db.query("SELECT type_token, channel_token, user_name, message_text, message_timestamp FROM messages WHERE type_token = $1 AND channel_token = $2", [req.params.type_token, req.params.channel_token], function(err, result) {
     if (err) {
-      res.send(err);
+      res.status(500).send(err);
     } else {
       res.send(result.rows);
     }
@@ -39,7 +39,7 @@ app.get('/:type_token/:channel_token', function (req, res) {
 app.get('/:type_token', function (req, res) {
     db.query("SELECT type_token, channel_token FROM messages WHERE type_token = $1 GROUP BY type_token, channel_token", [req.params.type_token], function(err, result) {
     if (err) {
-      res.send(err);
+      res.status(500).send(err);
     } else {
       res.send(result.rows);
     }
@@ -53,7 +53,7 @@ app.post('/:type_token/:channel_token', function(req, res){
       if (err.code == "23502") {
         err.explanation = "Didn't get all of the parameters in the request body. Send user_name and message_text in the request body."
       }
-      res.send(err);
+      res.status(500).send(err);
     } else {
       res.send(result);
     }
