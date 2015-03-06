@@ -51,7 +51,7 @@ app.post('/:type_token/:channel_token', function(req, res){
   db.query("INSERT INTO messages (type_token, channel_token, user_name, message_text) VALUES ($1, $2, $3, $4)", [req.params.type_token, req.params.channel_token, req.body.user_name, req.body.message_text], function(err, result) {
     if (err) {
       if (err.code == "23502") {
-        err.explanation = "Didn't get all of the parameters in the request body. Send user_name and message_text in the request body."
+        err.explanation = "Didn't get all of the parameters in the request body. Send user_name and message_text in the request body (remember this is a POST request)."
       }
       res.status(500).send(err);
     } else {
